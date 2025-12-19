@@ -2,7 +2,7 @@
 
 An AI-powered web application that generates personalized travel itineraries, explores tourist attractions across India, and offers a premium mobile-friendly user experience.
 
-![Hero]((https://images.unsplash.com/photo-1532559685660-72133499426f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80))
+
 
 ## ✨ Key Features
 
@@ -86,6 +86,4 @@ AntiGravity/
 └── requirements.txt  # Dependencies
 ```
 
-## 🛡️ License
 
-This project is open-source and available under the [MIT License](LICENSE).
