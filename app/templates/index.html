@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Explore the World{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <h1>Discover India's <br> Timeless Wonders</h1>
+    <p>Experience the magic of heritage, nature, and culture with our advanced AI-powered tourist guide. Your perfect
+        journey begins here.</p>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="{{ url_for('main.plan_trip') }}" class="btn-premium"
+            style="background: white; color: #0f172a; box-shadow: 0 4px 6px rgba(255,255,255,0.2);">Plan Your Trip</a>
+        <a href="{{ url_for('main.explore') }}" class="btn-premium">Explore Places</a>
+    </div>
+</div>
+
+<!-- Categories Section -->
+<div class="container" style="padding: 2rem 0;">
+    <h2 style="text-align: center; margin-bottom: 2rem; color: #1e293b;">Browse by Category</h2>
+    <div class="filters-bar" style="justify-content: center; margin-bottom: 0;">
+        <a href="{{ url_for('main.explore') }}" class="filter-pill active">All Places</a>
+        <a href="{{ url_for('main.explore', category='Historical') }}" class="filter-pill">🏛️ Historical</a>
+        <a href="{{ url_for('main.explore', category='Nature') }}" class="filter-pill">🌿 Nature</a>
+        <a href="{{ url_for('main.explore', category='Park') }}" class="filter-pill">🏞️ National Parks</a>
+    </div>
+</div>
+
+<!-- Featured Places -->
+<div class="container" style="padding: 2rem 0;">
+    <h2 style="text-align: center; margin-bottom: 3rem; color: #1e293b; font-size: 2.5rem;">Featured Destinations</h2>
+    <div class="places-grid">
+        {% for place in featured_places %}
+        <div class="place-card">
+            <div class="card-image-wrapper">
+                <img src="{{ url_for('static', filename='uploads/' + place.image_file) }}" alt="{{ place.name }}">
+                <div class="card-badge">{{ place.category }}</div>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">{{ place.name }}</h3>
+                <p
+                    style="color: #64748b; margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                    {{ place.description }}
+                </p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
+                    <span style="color: #0f172a; font-weight: 700; font-size: 1.1rem;">
+                        {% if place.entry_fee == 0 %}
+                        Free Entry
+                        {% else %}
+                        ₹{{ place.entry_fee }}
+                        {% endif %}
+                    </span>
+                    <a href="{{ url_for('main.place_details', place_id=place.id) }}"
+                        style="color: #2563eb; text-decoration: none; font-size: 0.9rem; font-weight: 600;">Explore
+                        &rarr;</a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div style="text-align: center; grid-column: 1/-1;">
+            <p>No featured places available yet. Add some from the Admin Panel!</p>
+        </div>
+        {% endfor %}
+    </div>
+    <div style="text-align: center; margin-top: 4rem; padding-bottom: 2rem;">
+        <a href="{{ url_for('main.explore') }}" class="btn-view-all">View All Destinations</a>
+    </div>
+    {% endblock %}

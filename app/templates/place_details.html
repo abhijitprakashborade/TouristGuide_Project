@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}{{ place.name }}{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 2rem;">
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div
+        style="background: #e0f2fe; border: 1px solid #bae6fd; color: #0369a1; padding: 1rem; border-radius: 0.5rem; margin-bottom: 2rem;">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div class="glass-panel" style="padding: 2rem;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+            <!-- Left: Visuals & Map -->
+            <div>
+                <img src="{{ url_for('static', filename='uploads/' + place.image_file) }}"
+                    style="width: 100%; border-radius: var(--radius); box-shadow: var(--shadow); object-fit: cover; height: 350px;">
+
+                <div style="margin-top: 2rem;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3 style="margin: 0;">Location</h3>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination={{ place.latitude }},{{ place.longitude }}"
+                            target="_blank" class="btn-action-primary"
+                            style="display: inline-block; width: auto; padding: 0.5rem 1rem; font-size: 0.9rem;">
+                            <i class="fas fa-external-link-alt"></i> Open in Google Maps
+                        </a>
+                    </div>
+                    <div id="map" style="height: 250px; border-radius: var(--radius); z-index: 1;"></div>
+                </div>
+            </div>
+
+            <!-- Right: Details & Reviews -->
+            <div>
+                <span
+                    style="color: #1a73e8; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;">{{
+                    place.category }}</span>
+                <h1 style="margin: 0.5rem 0 1rem 0; font-size: 2.5rem; color: #202124;">{{ place.name }}</h1>
+
+                <div style="display: flex; gap: 2rem; margin-bottom: 2rem; color: #5f6368; font-size: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-video"></i> ₹{{
+                        place.entry_fee }} Entry</div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-map-marker-alt"></i>
+                        {{ place.location_address }}</div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; color: #f59e0b; font-weight: 700;"><i
+                            class="fas fa-star"></i> 4.8</div>
+                </div>
+
+                <p style="font-size: 1.1rem; line-height: 1.8; color: #3c4043; margin-bottom: 2rem;">
+                    {{ place.description }}
+                </p>
+
+                <!-- Reviews Section -->
+                <div id="reviews" style="background: #f8fafc; padding: 1.5rem; border-radius: 1rem;">
+                    <h3 style="margin-top: 0; color: #1e293b; padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0;">
+                        Reviews</h3>
+
+                    <div style="max-height: 300px; overflow-y: auto; margin-bottom: 1.5rem;">
+                        {% for feedback in place.feedbacks %}
+                        <div style="margin-bottom: 1rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.2rem;">
+                                <strong style="font-size: 0.9rem;">{{ feedback.author.username }}</strong>
+                                <div style="color: #f59e0b; font-size: 0.8rem;">
+                                    {% for _ in range(feedback.rating) %}<i class="fas fa-star"></i>{% endfor %}
+                                </div>
+                            </div>
+                            <p style="margin: 0; color: #475569; font-size: 0.9rem;">{{ feedback.comment }}</p>
+                        </div>
+                        {% else %}
+                        <p style="color: #64748b; font-style: italic;">No reviews yet. Be the first!</p>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Add Review Form -->
+                    {% if current_user.is_authenticated %}
+                    <form action="{{ url_for('main.add_review', place_id=place.id) }}" method="POST">
+                        <div style="margin-bottom: 1rem;">
+                            <label style="font-size: 0.9rem; font-weight: 600; color: #475569;">Your Rating</label>
+                            <div style="font-size: 1.5rem; color: #cbd5e1; cursor: pointer;" class="star-rating-input">
+                                <input type="radio" name="rating" value="5" id="s5" style="display:none;"><label
+                                    for="s5"><i class="fas fa-star" onclick="setRating(5)"></i></label>
+                                <input type="radio" name="rating" value="4" id="s4" style="display:none;"><label
+                                    for="s4"><i class="fas fa-star" onclick="setRating(4)"></i></label>
+                                <input type="radio" name="rating" value="3" id="s3" style="display:none;"><label
+                                    for="s3"><i class="fas fa-star" onclick="setRating(3)"></i></label>
+                                <input type="radio" name="rating" value="2" id="s2" style="display:none;"><label
+                                    for="s2"><i class="fas fa-star" onclick="setRating(2)"></i></label>
+                                <input type="radio" name="rating" value="1" id="s1" style="display:none;"><label
+                                    for="s1"><i class="fas fa-star" onclick="setRating(1)"></i></label>
+                            </div>
+                        </div>
+                        <textarea name="comment" placeholder="Share your experience..." rows="3" class="form-control"
+                            style="background: white; margin-bottom: 1rem; width: 100%; border: 1px solid #cbd5e1; border-radius: 0.5rem; padding: 0.5rem;"
+                            required></textarea>
+                        <button type="submit" class="btn-action-primary">Submit Review</button>
+                    </form>
+                    {% else %}
+                    <p><a href="{{ url_for('auth.login') }}" style="color: #1a73e8; font-weight: 600;">Login</a> to
+                        leave a review.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var map = L.map('map').setView([{{ place.latitude }}, {{ place.longitude }}], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    L.marker([{{ place.latitude }}, {{ place.longitude }}]).addTo(map)
+        .bindPopup('{{ place.name }}')
+        .openPopup();
+    });
+</script>
+{% endblock %}

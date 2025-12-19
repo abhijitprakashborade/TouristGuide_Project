@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Explore India{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 1rem;">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-section">
+        <div class="page-title">
+            Explore India <span class="country-code">IN</span>
+        </div>
+        <button class="nav-btn" style="background:#f1f3f4; color:#202124; border:none;"><i
+                class="fas fa-expand"></i></button>
+    </div>
+
+    <!-- Map Section -->
+    <div id="main-map"
+        style="width: 100%; height: 400px; border-radius: 1rem; background: #e0e0e0; margin-bottom: 2rem;"></div>
+
+    <!-- Filters -->
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+        <div style="position: relative;">
+            <button class="filter-btn" onclick="document.getElementById('stateDropdown').classList.toggle('show')">
+                <i class="fas fa-map-marker-alt" style="color: #e11d48;"></i>
+                {{ current_state if current_state and current_state != 'All' else 'All States' }}
+                <i class="fas fa-chevron-down" style="font-size: 0.8rem; margin-left: 0.5rem; color: #64748b;"></i>
+            </button>
+            <div id="stateDropdown" class="dropdown-content">
+                <a href="{{ url_for('main.explore') }}">All States</a>
+                {% for state in states %}
+                <a href="{{ url_for('main.explore', state=state) }}">{{ state }}</a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <a href="{{ url_for('main.explore') }}"
+            class="filter-btn {% if not current_category %}active{% endif %}">All</a>
+        <a href="{{ url_for('main.explore', category='Historical') }}"
+            class="filter-btn {% if current_category == 'Historical' %}active{% endif %}"><i class="fas fa-landmark"
+                style="color: #a855f7;"></i> History</a>
+        <a href="{{ url_for('main.explore', category='Nature') }}"
+            class="filter-btn {% if current_category == 'Nature' %}active{% endif %}"><i class="fas fa-tree"
+                style="color: #22c55e;"></i> Nature</a>
+        <a href="{{ url_for('main.explore', category='Park') }}"
+            class="filter-btn {% if current_category == 'Park' %}active{% endif %}"><i class="fas fa-leaf"
+                style="color: #10b981;"></i> Park</a>
+    </div>
+</div>
+
+<hr style="margin: 2rem 0; border: none; border-top: 1px solid #f1f3f4;">
+
+<!-- Places Grid -->
+<div class="places-grid">
+    {% for place in places.items %}
+    <div class="place-card">
+        <div class="card-image-wrapper">
+            <img src="{{ url_for('static', filename='uploads/' + place.image_file) }}" alt="{{ place.name }}">
+            <div class="card-badge {{ place.category|lower }}">{{ place.category }}</div>
+        </div>
+
+        <div class="card-content">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                <h3 class="card-title">{{ place.name }}</h3>
+                <div
+                    style="display: flex; align-items: center; gap: 0.2rem; color: #f59e0b; font-size: 0.9rem; font-weight: 700;">
+                    <span>4.8</span> <i class="fas fa-star"></i>
+                </div>
+            </div>
+
+            <div class="card-location">
+                <i class="fas fa-map-pin"></i> {{ place.location_address }}
+            </div>
+
+            <p class="card-desc">{{ place.description[:90] }}...</p>
+
+            <div
+                style="margin-top: auto; padding-top: 1rem; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
+                <div class="price-tag">{% if place.entry_fee == 0 %}Free{% else %}₹{{ place.entry_fee }}{% endif %}
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <a href="{{ url_for('main.place_details', place_id=place.id) }}"
+                        class="btn-card-action primary">View</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+<div style="margin-top: 1rem; display: flex; justify-content: center; gap: 0.5rem; padding-bottom: 2rem;">
+    {% if places.has_prev %}
+    <a href="{{ url_for('main.explore', page=places.prev_num) }}" class="nav-btn"
+        style="background:var(--primary-color);">&larr; Prev</a>
+    {% endif %}
+    {% if places.has_next %}
+    <a href="{{ url_for('main.explore', page=places.next_num) }}" class="nav-btn"
+        style="background:var(--primary-color);">Next &rarr;</a>
+    {% endif %}
+</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var map = L.map('main-map').setView([20.5937, 78.9629], 5); // Center of India
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Add markers for all places (this would ideally interact with specific place data)
+        {% for place in places.items %}
+        L.marker([{{ place.latitude }}, {{ place.longitude }}]).addTo(map)
+        .bindPopup("<b>{{ place.name }}</b><br>{{ place.location_address }}");
+    {% endfor %}
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Plan Your Tour{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 2rem;">
+    <div class="glass-panel" style="padding: 3rem; max-width: 800px; margin: 0 auto;">
+        <h1 style="text-align: center; margin-bottom: 1rem;">Intelligent Tour Planner</h1>
+        <p style="text-align: center; color: var(--secondary-color); margin-bottom: 3rem;">Tell us your preferences, and
+            we'll design the perfect itinerary for you.</p>
+
+        <form>
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; font-weight: 600; margin-bottom: 1rem;">What are your interests?</label>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <label class="interest-checkbox">
+                        <input type="checkbox" name="interests" value="history"> Historical Sites
+                    </label>
+                    <label class="interest-checkbox">
+                        <input type="checkbox" name="interests" value="nature"> Nature & Parks
+                    </label>
+                    <label class="interest-checkbox">
+                        <input type="checkbox" name="interests" value="art"> Art & Museums
+                    </label>
+                    <label class="interest-checkbox">
+                        <input type="checkbox" name="interests" value="food"> Food & Dining
+                    </label>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                <div>
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Budget Range ($)</label>
+                    <input type="range" min="0" max="500" class="form-control">
+                    <div
+                        style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--secondary-color);">
+                        <span>Budget Friendly</span>
+                        <span>Luxury</span>
+                    </div>
+                </div>
+                <div>
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Duration (Hours)</label>
+                    <input type="number" class="form-control" placeholder="e.g. 4">
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; font-weight: 600; margin-bottom: 1rem;">preferred Transport</label>
+                <select class="form-control">
+                    <option>Walking</option>
+                    <option>Public Transit</option>
+                    <option>Car/Taxi</option>
+                </select>
+            </div>
+
+            <div style="text-align: center;">
+                <button type="button" class="btn-premium"
+                    onclick="alert('This feature uses the ML engine to generate routes. Coming soon in full demo!')"
+                    style="font-size: 1.1rem; padding: 1rem 3rem;">Generate Itinerary</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .interest-checkbox {
+        background: white;
+        padding: 0.5rem 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 2rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .interest-checkbox:hover {
+        border-color: var(--accent-color);
+    }
+
+    .interest-checkbox input {
+        margin-right: 0.5rem;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Add New Place{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 800px; padding-top: 2rem;">
+    <div class="glass-panel" style="padding: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h2>Add User Place</h2>
+            <a href="{{ url_for('admin.dashboard') }}"
+                style="color: var(--secondary-color); text-decoration: none;">&larr; Back to Dashboard</a>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-gray-700">Place Name</label>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-gray-700">Category</label>
+                    <select name="category" class="form-control">
+                        <option value="Museum">Museum</option>
+                        <option value="Park">Park</option>
+                        <option value="Historical">Historical Site</option>
+                        <option value="Restaurant">Restaurant</option>
+                        <option value="Amusement">Amusement Park</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <label class="block mb-2 text-sm font-bold text-gray-700">Description</label>
+                <textarea name="description" rows="4" class="form-control"></textarea>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-gray-700">Latitude</label>
+                    <input type="number" step="any" name="latitude" class="form-control" placeholder="e.g. 40.7128"
+                        required>
+                </div>
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-gray-700">Longitude</label>
+                    <input type="number" step="any" name="longitude" class="form-control" placeholder="e.g. -74.0060"
+                        required>
+                </div>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <label class="block mb-2 text-sm font-bold text-gray-700">Address/Location</label>
+                <input type="text" name="address" class="form-control" required>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-gray-700">Entry Fee ($)</label>
+                    <input type="number" step="0.01" name="entry_fee" class="form-control" value="0.00">
+                </div>
+                <div>
+                    <label class="block mb-2 text-sm font-bold text-gray-700">Image Upload</label>
+                    <input type="file" name="image" class="form-control" accept="image/*">
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <button type="submit" class="btn-premium" style="width: 100%;">Save Place</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

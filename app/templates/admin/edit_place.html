@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Place{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 2rem; max-width: 800px;">
+    <div style="background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+        <h2 style="margin-bottom: 1.5rem; color: #1e293b;">Edit Place: {{ place.name }}</h2>
+
+        <form action="{{ url_for('admin.edit_place', place_id=place.id) }}" method="POST" enctype="multipart/form-data">
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; color: #475569; font-size: 0.9rem; margin-bottom: 0.5rem;">Place
+                    Name</label>
+                <input type="text" name="name" value="{{ place.name }}" class="form-control"
+                    style="background: #f8fafc;" required>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <label
+                    style="display: block; color: #475569; font-size: 0.9rem; margin-bottom: 0.5rem;">Category</label>
+                <select name="category" class="form-control" style="background: #f8fafc;">
+                    <option value="Historical" {% if place.category=='Historical' %}selected{% endif %}>Historical
+                    </option>
+                    <option value="Nature" {% if place.category=='Nature' %}selected{% endif %}>Nature</option>
+                    <option value="Park" {% if place.category=='Park' %}selected{% endif %}>Park</option>
+                    <option value="Museum" {% if place.category=='Museum' %}selected{% endif %}>Museum</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <label
+                    style="display: block; color: #475569; font-size: 0.9rem; margin-bottom: 0.5rem;">Description</label>
+                <textarea name="description" rows="5" class="form-control"
+                    style="background: #f8fafc;">{{ place.description }}</textarea>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; color: #475569; font-size: 0.9rem; margin-bottom: 0.5rem;">Entry Fee
+                    (₹)</label>
+                <input type="number" step="0.01" name="entry_fee" value="{{ place.entry_fee }}" class="form-control"
+                    style="background: #f8fafc;">
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; color: #475569; font-size: 0.9rem; margin-bottom: 0.5rem;">Address</label>
+                <input type="text" name="address" value="{{ place.location_address }}" class="form-control"
+                    style="background: #f8fafc;" required>
+            </div>
+
+            <div style="margin-bottom: 1rem; display: flex; gap: 1rem;">
+                <div style="flex: 1;">
+                    <label
+                        style="display: block; color: #475569; font-size: 0.9rem; margin-bottom: 0.5rem;">Latitude</label>
+                    <input type="number" step="any" name="latitude" value="{{ place.latitude }}" class="form-control"
+                        style="background: #f8fafc;">
+                </div>
+                <div style="flex: 1;">
+                    <label
+                        style="display: block; color: #475569; font-size: 0.9rem; margin-bottom: 0.5rem;">Longitude</label>
+                    <input type="number" step="any" name="longitude" value="{{ place.longitude }}" class="form-control"
+                        style="background: #f8fafc;">
+                </div>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; color: #475569; font-size: 0.9rem; margin-bottom: 0.5rem;">Update Image
+                    (Optional)</label>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <img src="{{ url_for('static', filename='uploads/' + place.image_file) }}"
+                        style="width: 60px; height: 60px; object-fit: cover; border-radius: 0.5rem;">
+                    <input type="file" name="image" class="form-control">
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem;">
+                <button type="submit"
+                    style="background: #10b981; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 2rem; font-weight: 600; cursor: pointer;">Update
+                    Place</button>
+                <a href="{{ url_for('admin.dashboard') }}"
+                    style="background: #64748b; color: white; text-decoration: none; padding: 0.8rem 1.5rem; border-radius: 2rem; font-weight: 600; display: inline-block;">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

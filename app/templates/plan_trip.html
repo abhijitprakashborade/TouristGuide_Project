@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Plan Your Smart Trip{% endblock %}
+
+{% block content %}
+<div class="planner-container">
+    <div class="trip-planner-card">
+        <!-- Header -->
+        <div class="card-header">
+            <h2 class="card-title">
+                <i class="fas fa-route"></i> Plan Your Smart Trip
+            </h2>
+            <p class="card-subtitle">
+                Enter your preferences and our AI will curate the perfect itinerary for you.
+            </p>
+        </div>
+
+        <form method="POST" action="{{ url_for('main.plan_trip') }}">
+            <!-- Budget -->
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-wallet" style="color: #10b981;"></i> Max Budget (₹)
+                </label>
+                <input type="number" name="budget" class="form-control-lg width-100" placeholder="e.g. 5000" required
+                    style="width: 100%; box-sizing: border-box;">
+            </div>
+
+            <!-- City -->
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-map-marker-alt" style="color: #ef4444;"></i> Starting City
+                </label>
+                <div class="select-wrapper">
+                    <select name="city" class="form-control-lg width-100"
+                        style="appearance: none; cursor: pointer; width: 100%; box-sizing: border-box;">
+                        <option value="" disabled selected>-- Detection (Use GPS) --</option>
+                        <option value="New Delhi">New Delhi</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Bangalore">Bangalore</option>
+                        <option value="Chennai">Chennai</option>
+                        <option value="Kolkata">Kolkata</option>
+                    </select>
+                    <i class="fas fa-chevron-down select-icon"></i>
+                </div>
+                <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 0.5rem; margin-left: 0.2rem;">
+                    Choose a city or leave empty to use current location (simulated).
+                </p>
+            </div>
+
+            <!-- Interests -->
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-heart" style="color: #ef4444;"></i> Select Interests
+                </label>
+                <div class="interests-grid">
+                    <label class="checkbox-pill">
+                        <input type="checkbox" name="interests" value="Historical" checked>
+                        <span>Historical</span>
+                    </label>
+                    <label class="checkbox-pill">
+                        <input type="checkbox" name="interests" value="Nature" checked>
+                        <span>Nature</span>
+                    </label>
+                    <label class="checkbox-pill">
+                        <input type="checkbox" name="interests" value="Park" checked>
+                        <span>Park</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-generate">
+                <i class="fas fa-magic"></i> Generate Optimization Route
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

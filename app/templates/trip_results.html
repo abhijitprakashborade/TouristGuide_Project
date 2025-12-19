@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Your Curated Itinerary{% endblock %}
+
+{% block content %}
+<div class="results-container">
+    <div class="results-card">
+        <div class="card-header">
+            <h1 class="card-title" style="font-size: 2.5rem;">
+                <i class="fas fa-magic" style="color: #3b82f6;"></i> Your Optimized Itinerary
+            </h1>
+            <p class="card-subtitle">
+                Based on your budget of <strong>₹{{ budget }}</strong>
+                {% if city %} starting from <strong>{{ city }}</strong>{% endif %}.
+            </p>
+        </div>
+
+        {% if places %}
+        <div class="timeline-container">
+            {% for place in places %}
+            <div class="timeline-item">
+                <div class="timeline-marker">
+                    <div class="marker-circle">
+                        {{ loop.index }}
+                    </div>
+                    {% if not loop.last %}
+                    <div class="timeline-line"></div>
+                    {% endif %}
+                </div>
+
+                <div class="result-place-card">
+                    <div class="place-content-wrapper">
+                        <img src="{{ url_for('static', filename='uploads/' + place.image_file) }}"
+                            alt="{{ place.name }}" class="place-thumb">
+                        <div class="place-details">
+                            <div class="place-header">
+                                <h3 class="place-name">{{ place.name }}</h3>
+                                <span class="category-badge">{{ place.category }}</span>
+                            </div>
+                            <p class="place-desc">{{ place.description[:150] }}...</p>
+                            <div class="place-meta">
+                                <span class="meta-item">
+                                    <i class="fas fa-money-bill-wave" style="color: #10b981;"></i>
+                                    Fee: ₹{{ place.entry_fee }}
+                                </span>
+                                <span class="meta-item">
+                                    <i class="fas fa-clock" style="color: #f59e0b;"></i>
+                                    Rec. Time: 2 Hrs
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div style="text-align: center; margin-top: 4rem;">
+            <a href="{{ url_for('main.plan_trip') }}" class="btn-generate"
+                style="display: inline-flex; width: auto; text-decoration: none; padding: 0.75rem 2rem; background: white; color: #2563eb; border: 2px solid #2563eb; box-shadow: none;">
+                <i class="fas fa-redo"></i> Generate New Plan
+            </a>
+        </div>
+
+        {% else %}
+        <div class="empty-state">
+            <span class="empty-icon">😕</span>
+            <h3 style="color: #1e293b; margin-bottom: 1rem;">No matching places found within this budget.</h3>
+            <p style="color: #64748b; margin-bottom: 2rem;">Try increasing your budget or selecting different interests.
+            </p>
+            <a href="{{ url_for('main.plan_trip') }}" class="btn-generate icon-link">
+                <i class="fas fa-arrow-left"></i> Try Again
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

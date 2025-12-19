@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="card-header">
+            <h2 class="card-title">Create Account</h2>
+            <p class="card-subtitle">Join us to discover India's wonders</p>
+        </div>
+
+        <form method="POST">
+            <div class="form-group">
+                <label for="username" class="form-label">Username</label>
+                <div class="input-icon-wrapper">
+                    <input type="text" class="form-control-lg width-100 with-icon" id="username" name="username"
+                        placeholder="johndoe" required style="width: 100%; box-sizing: border-box;">
+                    <i class="fas fa-user input-icon"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <div class="input-icon-wrapper">
+                    <input type="email" class="form-control-lg width-100 with-icon" id="email" name="email"
+                        placeholder="name@example.com" required style="width: 100%; box-sizing: border-box;">
+                    <i class="fas fa-envelope input-icon"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-icon-wrapper">
+                    <input type="password" class="form-control-lg width-100 with-icon" id="password" name="password"
+                        placeholder="••••••••" required style="width: 100%; box-sizing: border-box;">
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-generate" style="margin-top: 1.5rem;">
+                Create Account <i class="fas fa-user-plus" style="margin-left: 0.5rem;"></i>
+            </button>
+        </form>
+
+        <p style="text-align: center; margin-top: 1.5rem; color: #64748b; font-size: 0.95rem;">
+            Already have an account?
+            <a href="{{ url_for('auth.login') }}" style="color: #2563eb; font-weight: 600; text-decoration: none;">
+                Login
+            </a>
+        </p>
+    </div>
+</div>
+{% endblock %}

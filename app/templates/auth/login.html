@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="card-header">
+            <h2 class="card-title">Welcome Back</h2>
+            <p class="card-subtitle">Please sign in to access your itinerary</p>
+        </div>
+
+        <form method="POST">
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <div class="input-icon-wrapper">
+                    <input type="email" class="form-control-lg width-100 with-icon" id="email" name="email"
+                        placeholder="name@example.com" required style="width: 100%; box-sizing: border-box;">
+                    <i class="fas fa-envelope input-icon"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-icon-wrapper">
+                    <input type="password" class="form-control-lg width-100 with-icon" id="password" name="password"
+                        placeholder="••••••••" required style="width: 100%; box-sizing: border-box;">
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-generate" style="margin-top: 1.5rem;">
+                Sign In <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
+            </button>
+        </form>
+
+        <p style="text-align: center; margin-top: 1.5rem; color: #64748b; font-size: 0.95rem;">
+            Don't have an account?
+            <a href="{{ url_for('auth.register') }}" style="color: #2563eb; font-weight: 600; text-decoration: none;">
+                Sign Up
+            </a>
+        </p>
+    </div>
+</div>
+{% endblock %}
